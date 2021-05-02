@@ -6,6 +6,7 @@
       "@/services/*": ["services/*"],
       "@/store/*": ["store/*"],
       "@/pages/*": ["pages/*"],
+      "@/shared/*": ["shared/*"],
     },
     "target": "es5",
     "lib": [

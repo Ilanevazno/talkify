@@ -1,5 +1,18 @@
-import { ReactElement } from 'react';
+import { ReactElement, useEffect } from 'react';
 
-const AuthProvider = ({ children }): ReactElement => <div>{children}</div>;
+import user from './state';
+
+import { useRouter } from 'next/router';
+
+const AuthProvider = ({ children }): ReactElement => {
+    const router = useRouter();
+    const { nickName } = user.authStatus;
+
+    useEffect(() => {
+        router.push('/signIn');
+    }, []);
+
+    return nickName ? <div>{children}</div> : null;
+};
 
 export default AuthProvider;
