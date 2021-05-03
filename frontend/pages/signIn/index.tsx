@@ -3,7 +3,7 @@ import { ReactElement } from 'react';
 import Input from '@/components/Input';
 import Button from '@/components/Button';
 import { Formik } from 'formik';
-import { useQuery } from '@apollo/client';
+import { useLazyQuery } from '@apollo/client';
 
 import { SIGN_IN } from '@/services/Api/user/graphql';
 import {
@@ -11,13 +11,14 @@ import {
 } from './styles';
 
 const SignIn = (): ReactElement => {
-  const handleFormSubmit = ({ nickName, password }) => {
-    const { data } = useQuery(SIGN_IN, {
-      variables: { nickName, password },
-    });
+  const [auth, { loading, data, error }] = useLazyQuery(SIGN_IN);
 
-    console.log('data', data);
+  const handleFormSubmit = ({ nickName, password }) => {
+    // auth(nickname, password);
+    auth({ variables: { nickName, password } });
   };
+
+  console.log('loading', loading, 'data', data, 'error', error);
 
   return (
     <AuthWrapper>
