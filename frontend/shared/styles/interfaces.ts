@@ -1,4 +1,9 @@
 export interface IMainTheme {
+  typography: {
+    fontName: string,
+    secondaryFontName: string,
+    fontSize: string,
+  },
   colors: {
     neutral: {
       white: string,
@@ -26,5 +31,12 @@ export interface IMainTheme {
       warning: string,
       success: string,
     }
+  },
+  shadows: {
+    main: string,
   }
+}
+
+export interface IThemes {
+  theme: IMainTheme,
 }

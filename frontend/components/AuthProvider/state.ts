@@ -1,22 +1,22 @@
-import { makeAutoObservable } from "mobx";
-import { IAuthData } from "./interfaces";
+import { makeAutoObservable } from 'mobx';
+import { IAuthData } from './interfaces';
 
 class Auth {
     private authData: IAuthData = {
-        email: null,
-        nickName: null,
+      email: null,
+      nickName: null,
     };
-    
+
     constructor() {
-        makeAutoObservable(this);
+      makeAutoObservable(this);
     }
 
-    setAuthData (authData: IAuthData) {
-        this.authData = authData;
+    setAuthData(authData: IAuthData) {
+      this.authData = authData;
     }
 
     get authStatus() {
-        return this.authData;
+      return this.authData;
     }
 }
 
