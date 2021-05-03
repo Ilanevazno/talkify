@@ -3,6 +3,6 @@ import { ReactElement } from 'react';
 import { InputField } from './styles';
 import { IProps } from './interfaces';
 
-const Input = ({ placeholder }: IProps): ReactElement => <InputField placeholder={placeholder} />;
+const Input = (props: IProps): ReactElement => <InputField {...props} />;
 
 export default Input;

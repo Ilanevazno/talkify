@@ -14,7 +14,7 @@ export const AuthWrapper = styled.div`
   justify-content: center;
 `;
 
-export const FormWrapper = styled.div`
+export const FormWrapper = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -34,4 +34,9 @@ export const Content = styled.div`
 
 export const WrapperButton = styled.div`
   margin-top: 20px;
+`;
+
+export const FormElement = styled.div`
+  margin-bottom: 10px;
+  width: 35%;
 `;
