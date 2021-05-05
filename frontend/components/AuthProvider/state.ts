@@ -15,7 +15,7 @@ class Auth {
       this.authData = authData;
     }
 
-    get authStatus() {
+    get authInfo() {
       return this.authData;
     }
 }

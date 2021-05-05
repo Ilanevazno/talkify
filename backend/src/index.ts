@@ -3,6 +3,7 @@ import mongoose = require('mongoose');
 import { ApolloServer } from 'apollo-server-express';
 import * as cookieParser from 'cookie-parser';
 import { verify } from 'jsonwebtoken';
+import * as cors from 'cors';
 
 import { ACCESS_TOKEN_KEY, MONGO_USER, MONGO_PASSWORD } from './constants';
 import { typeDefs, resolvers } from './grapql';
@@ -11,7 +12,7 @@ const app = express();
 const port = process.env.port || 5000;
 
 app.use(cookieParser());
-app.use(express.json())
+app.use(express.json());
 app.use((req, _, next) => {
     const accessToken = req.cookies['access-token'];
 
@@ -31,7 +32,10 @@ const server = new ApolloServer({
     context: ({ req, res }) => ({ req, res }),
  });
 
-server.applyMiddleware({ app });
+server.applyMiddleware({ app, cors: {
+    origin: 'http://localhost:3000',
+    credentials: true,
+} });
 
 app.listen(port, () => {
     console.log(`server is started on port ${port}`);

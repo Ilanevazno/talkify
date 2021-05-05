@@ -1,18 +1,24 @@
-import { ReactElement, useEffect } from 'react';
+import { ReactElement } from 'react';
 
 import { useRouter } from 'next/router';
+import { useQuery } from '@apollo/client';
+import { GET_ME } from '@/services/Api/user/graphql';
 import { IAuthProviderProps } from './interfaces';
 import user from './state';
 
 const AuthProvider = ({ children }: IAuthProviderProps): ReactElement => {
   const router = useRouter();
-  const { nickName } = user.authStatus;
+  const { loading, data } = useQuery(GET_ME, {
+    onCompleted: ({ getMe }) => {
+      if (!getMe?.nickName) router.push('/signIn');
+      else user.setAuthData(getMe);
+    },
+  });
+  const nickName = data?.getMe?.nickName;
 
-  useEffect(() => {
-    router.push('/signIn');
-  }, []);
+  const isAuthDone = !loading && nickName;
 
-  return nickName ? <div>{children}</div> : null;
+  return isAuthDone ? <div>{children}</div> : null;
 };
 
 export default AuthProvider;
