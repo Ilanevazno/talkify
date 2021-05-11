@@ -1,24 +1,60 @@
-import { ReactElement } from 'react';
+import {
+  createContext, ReactElement, useEffect, useState,
+} from 'react';
 
+import useAuth from '@/shared/hooks/useAuth';
 import { useRouter } from 'next/router';
-import { useQuery } from '@apollo/client';
-import { GET_ME } from '@/services/Api/user/graphql';
-import { IAuthProviderProps } from './interfaces';
-import user from './state';
+import Loading from '@/components/Loading';
+import { IAuthProviderProps, ERouter } from './interfaces';
+
+const AuthContext = createContext(null);
 
 const AuthProvider = ({ children }: IAuthProviderProps): ReactElement => {
+  const [isLoadedData, setLoadedData] = useState<boolean>(false);
+  const auth = useAuth();
   const router = useRouter();
-  const { loading, data } = useQuery(GET_ME, {
-    onCompleted: ({ getMe }) => {
-      if (!getMe?.nickName) router.push('/signIn');
-      else user.setAuthData(getMe);
-    },
-  });
-  const nickName = data?.getMe?.nickName;
 
-  const isAuthDone = !loading && nickName;
+  const { user, isLoadedUserData, getUser } = auth;
+  const { nickName } = user ?? { nickName: null };
+  const { pathname } = router;
 
-  return isAuthDone ? <div>{children}</div> : null;
+  const isSigningRequiredRoute = Object.values(ERouter).some((route) => pathname === route);
+
+  const checkOnSigning = () => {
+    if (pathname !== ERouter.SIGN_IN && !nickName) {
+      router.push(ERouter.SIGN_IN).then(() => {
+        setLoadedData(true);
+      });
+    }
+
+    if (nickName || pathname === ERouter.SIGN_IN) {
+      setLoadedData(true);
+    }
+  };
+
+  const checkSigningRequiredRoutes = () => {
+    if (isSigningRequiredRoute) {
+      getUser();
+      if (isLoadedUserData) {
+        checkOnSigning();
+      }
+    } else {
+      setLoadedData(true);
+    }
+  };
+
+  useEffect(() => {
+    checkSigningRequiredRoutes();
+  }, [isSigningRequiredRoute, pathname, isLoadedUserData]);
+
+  return isLoadedData ? (
+    <AuthContext.Provider value={auth}>
+      {children}
+    </AuthContext.Provider>
+  ) : <Loading />;
 };
 
-export default AuthProvider;
+export {
+  AuthProvider,
+  AuthContext,
+};

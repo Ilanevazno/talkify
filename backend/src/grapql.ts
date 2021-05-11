@@ -2,14 +2,17 @@ import authController from '@controllers/AuthController';
 import { gql } from 'apollo-server-express';
 
 const typeDefs = gql`
-    type User {
-        _id: String,
+    type AuthPayload {
         nickName: String,
-        email: String,
+        id: String,
+    }
+    type AuthStatus {
+        status: String,
+        payload: AuthPayload,
     }
     type Query {
-        signIn(email: String!, password: String!): String,
-        getMe: User,
+        signIn(email: String!, password: String!): AuthStatus,
+        getMe: AuthStatus,
     }
     type Mutation {
         registerUser(email: String!, password: String!, nickName: String!): String,

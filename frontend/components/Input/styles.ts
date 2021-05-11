@@ -1,6 +1,8 @@
 import { IThemes } from '@/shared/styles/interfaces';
 import styled from 'styled-components';
 
+import { lighten } from 'polished';
+
 export const InputField = styled.input`
   border-radius: 7px;
   outline: none;
@@ -8,7 +10,7 @@ export const InputField = styled.input`
   width: 100%;
   padding: 0 10px;
   font-size: 17px;
-  background: ${({ theme }: IThemes) => theme.colors.neutral.darkest};
+  background: ${({ theme }: IThemes) => lighten(0.2, theme.colors.neutral.darkest)};
   color: ${({ theme }: IThemes) => theme.colors.neutral.darken};
 
   &::placeholder {

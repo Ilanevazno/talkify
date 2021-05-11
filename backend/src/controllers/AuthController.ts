@@ -30,7 +30,7 @@ class AuthController {
 
             if (!user) return 'Пользователь не найден';
 
-            const { password: userHash, _id } = user;
+            const { password: userHash, nickName, _id } = user;
 
             const isAuthSuccess = bcrypt.compareSync(password, userHash);
 
@@ -49,7 +49,13 @@ class AuthController {
                 res.cookie('access-token', accessToken, { expires: new Date(Date.now() + expireAccessTokenTime) });
                 res.cookie('refresh-token', refreshToken, { expires: new Date(Date.now() + expireRefreshTokenTime) });
 
-                return 'Успешная авторизация';
+                return {
+                    status: 'Успешная авторизация',
+                    payload: {
+                        nickName,
+                        id: new String(_id),
+                    }
+                };
             }
 
             return 'Введён неверный пароль';
@@ -62,8 +68,15 @@ class AuthController {
     async getMe(userId: string) {
         try {
             const user = await User.findById(userId);
+            const { nickName, _id } = user ?? { nickName: null, id: null };
 
-            return user;
+            return {
+                status: 'Данные авторизации получены',
+                payload: {
+                    nickName,
+                    id: new String(_id),
+                },
+            };
         } catch (err) {
             return err;
         }

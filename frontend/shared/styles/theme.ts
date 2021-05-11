@@ -10,9 +10,9 @@ const mainTheme: IMainTheme = {
     neutral: {
       white: '#FFFFFF',
       darken: '#C2C2C2',
-      darkest: '#616161',
+      darkest: '#2d2d2d',
       darkly: '#535050',
-      background: '#786E80',
+      background: '#8a8192',
       backgroundDark: '#757474',
       fullBlack: '#373636',
     },

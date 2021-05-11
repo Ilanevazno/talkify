@@ -1,7 +1,18 @@
-import { ReactElement } from 'react';
+import { ReactElement, useContext } from 'react';
 
-import AuthProvider from '@/components/AuthProvider';
+import { AuthContext } from '@/components/AuthProvider';
 
-const Profile = (): ReactElement => <AuthProvider>profile page</AuthProvider>;
+const Profile = (): ReactElement => {
+  const { user } = useContext(AuthContext);
+
+  const { nickName } = user ?? { nickName: null };
+
+  return (
+    <div>
+      Welcome back, &nbsp;
+      {nickName}
+    </div>
+  );
+};
 
 export default Profile;
